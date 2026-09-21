@@ -1,0 +1,67 @@
+{
+  "skill_name": "jira-work-items",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "rough-idea-upload",
+      "prompt": "we need a way for consumers to upload documents into a bucket through our Documents REST API (we already have GET /buckets). can you create the jira items for this? project key is DOCS. the Atlassian MCP isn't connected so just save them as markdown files. Nobody is available to answer questions or confirm the plan, so assume the plan is approved and go ahead.",
+      "expected_output": "One epic plus stories (and analysis items only if genuinely unknown) with Context / Description / Technical Notes / Acceptance Criteria on stories, hierarchy README, saved as markdown files.",
+      "files": [],
+      "assertions": [
+        "Exactly one epic file is produced",
+        "Every story has the sections Context, Description, Technical Notes, Acceptance Criteria as ## headings, in that order",
+        "Every story's Context section is an 'As a ... I want ...' line",
+        "Every acceptance criterion is a checklist line starting with '[]' written as Given/When/Then",
+        "Every item file has frontmatter with type, title and parent (epic items reference the epic)",
+        "A hierarchy README lists the epic, its children, and their order/dependencies",
+        "At least one story has a POST endpoint on the buckets path in its Technical Notes, with request headers, response status codes and a fenced JSON payload",
+        "Security roles/scope are stated in a story Description and each story has a Given/When/Then criterion for the forbidden (403) case",
+        "Assumptions invented by the model (e.g. size limits, roles, scope names) are flagged as assumptions rather than stated as fact"
+      ]
+    },
+    {
+      "id": 1,
+      "eval_name": "spec-document-search",
+      "prompt": "Here's the spec for document search: skills/jira-work-items/evals/files/spec-document-search.md. Break it down into Jira tickets for project DOCS. The Atlassian MCP isn't connected so write them as markdown files. Nobody is available to answer questions or confirm the plan, so assume the plan is approved and go ahead.",
+      "expected_output": "Epic; analysis items for OCR need and search engine choice; stories for search, filters, pagination, security, UI, freshness; open points not silently decided.",
+      "files": [
+        "evals/files/spec-document-search.md"
+      ],
+      "assertions": [
+        "Exactly one epic file is produced",
+        "Every story has the sections Context, Description, Technical Notes, Acceptance Criteria as ## headings, in that order",
+        "Every story's Context section is an 'As a ... I want ...' line",
+        "Every acceptance criterion is a checklist line starting with '[]' written as Given/When/Then",
+        "Every item file has frontmatter with type, title and parent (epic items reference the epic)",
+        "A hierarchy README lists the epic, its children, and their order/dependencies",
+        "An analysis item exists for whether OCR/scanned-content search is needed in v1",
+        "An analysis item exists for the search engine choice (Postgres FTS vs OpenSearch); no story silently commits to one engine",
+        "Cross-bucket search is recorded as out of scope, and the API design item notes it must not block it later",
+        "The 60-second freshness and p95 500 ms latency requirements appear as acceptance criteria or analysis/deliverable targets",
+        "Analysis items have Questions, Approach, Timebox and Deliverable sections"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "meeting-notes-retention",
+      "prompt": "these are my messy notes from the legal/platform sync: skills/jira-work-items/evals/files/meeting-notes-retention.md \u2014 turn them into a Jira backlog, project DOCS. no Atlassian MCP available so markdown files are fine. Nobody is available to answer questions or confirm the plan, so assume the plan is approved and go ahead.",
+      "expected_output": "Epic; analysis items for retention periods, native lifecycle vs own job, count of expired docs, deletion audit trail; stories for admin retention config and legal hold; archive bucket exclusion captured; unresolved items not invented as facts.",
+      "files": [
+        "evals/files/meeting-notes-retention.md"
+      ],
+      "assertions": [
+        "Exactly one epic file is produced",
+        "Every story has the sections Context, Description, Technical Notes, Acceptance Criteria as ## headings, in that order",
+        "Every story's Context section is an 'As a ... I want ...' line",
+        "Every acceptance criterion is a checklist line starting with '[]' written as Given/When/Then",
+        "Every item file has frontmatter with type, title and parent (epic items reference the epic)",
+        "A hierarchy README lists the epic, its children, and their order/dependencies",
+        "The unconfirmed retention periods (5y default) are NOT stated as fact; an analysis item captures waiting on legal's confirmation",
+        "An analysis item exists for native lifecycle rules vs own nightly job, and one for counting documents already past retention",
+        "Deletion proof (who/when/what, kept 7 years) is captured in a story or analysis item",
+        "The legal-hold requirement (never delete held documents) and the admin retention/hold UI each appear as story content",
+        "The archive bucket exclusion is recorded as out of scope"
+      ]
+    }
+  ]
+}
